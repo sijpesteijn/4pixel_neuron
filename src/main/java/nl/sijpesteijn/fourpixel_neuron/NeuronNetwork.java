@@ -1,8 +1,7 @@
 package nl.sijpesteijn.fourpixel_neuron;
 
 public class NeuronNetwork {
-    public FourPixelImage findImage(FourPixelImage image) {
-        FourPixelImage output = null;
+    public EndNeuron findImage(FourPixelImage image) {
 
         Neuron l1_n1 = new Neuron();
         l1_n1.addConnection( new Connection(image.getPixel(0), 1d));
@@ -37,28 +36,28 @@ public class NeuronNetwork {
         l2_n4.addConnection(new Connection(l1_n3.getOutput(), -1d));
         l2_n4.addConnection(new Connection(l1_n4.getOutput(), -1d));
 
-        EndNeuron l3_n1 = new EndNeuron("Solid white");
+        EndNeuron l3_n1 = new EndNeuron("Solid white [1,1,1,1]");
         l3_n1.addConnection(new Connection(l2_n1.getOutput(), 1d));
 
-        EndNeuron l3_n2 = new EndNeuron("Solid black");
+        EndNeuron l3_n2 = new EndNeuron("Solid black [-1,-1,-1,-1]");
         l3_n2.addConnection(new Connection(l2_n1.getOutput(), -1d));
 
-        EndNeuron l3_n3 = new EndNeuron("Vertical left");
-        l3_n3.addConnection(new Connection(l2_n2.getOutput(), 1d));
+        EndNeuron l3_n3 = new EndNeuron("Vertical left [1,-1,-1,1]");
+        l3_n3.addConnection(new Connection(l2_n2.getOutput(), -1d));
 
-        EndNeuron l3_n4 = new EndNeuron("Vertical right");
-        l3_n4.addConnection(new Connection(l2_n2.getOutput(), -1d));
+        EndNeuron l3_n4 = new EndNeuron("Vertical right [-1,1,1,-1]");
+        l3_n4.addConnection(new Connection(l2_n2.getOutput(), 1d));
 
-        EndNeuron l3_n5 = new EndNeuron("Forward slash");
-        l3_n5.addConnection(new Connection(l2_n3.getOutput(), 1d));
+        EndNeuron l3_n5 = new EndNeuron("Forward slash [-1,1,-1,1]");
+        l3_n5.addConnection(new Connection(l2_n3.getOutput(), -1d));
 
-        EndNeuron l3_n6 = new EndNeuron("Backward slash");
-        l3_n6.addConnection(new Connection(l2_n3.getOutput(), -1d));
+        EndNeuron l3_n6 = new EndNeuron("Backward slash [1,-1,1,-1]");
+        l3_n6.addConnection(new Connection(l2_n3.getOutput(), 1d));
 
-        EndNeuron l3_n7 = new EndNeuron("Horizontal bottom");
+        EndNeuron l3_n7 = new EndNeuron("Horizontal bottom [-1,-1,1,1]");
         l3_n7.addConnection(new Connection(l2_n4.getOutput(), 1d));
 
-        EndNeuron l3_n8 = new EndNeuron("Horizontal top");
+        EndNeuron l3_n8 = new EndNeuron("Horizontal top [1,1,-1,-1]");
         l3_n8.addConnection(new Connection(l2_n4.getOutput(), -1d));
 
         EndNeuron highest = l3_n1;
@@ -84,10 +83,6 @@ public class NeuronNetwork {
             highest = l3_n8;
         }
 
-        System.out.println("Highest neuron: " + highest.getName());
-
-        output = new FourPixelImage(new Double[]{ l2_n1.getOutput(), l2_n2.getOutput(), l2_n3.getOutput(), l2_n4.getOutput()});
-
-        return output;
+        return highest;
     }
 }
